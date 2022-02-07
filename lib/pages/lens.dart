@@ -1,44 +1,64 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:camera/camera.dart';
-
-// local imports
-import 'package:green_assistant/services/camera.dart';
-import 'package:green_assistant/constants/models.dart';
-import 'package:green_assistant/services/models.dart';
+import 'package:flutter/material.dart';
 
 class LensPage extends StatefulWidget {
-  final List<CameraDescription> cameras;
+  const LensPage({
+    Key key,
+    this.camera,
+  }) : super(key: key);
 
-  LensPage(this.cameras);
+  final CameraDescription camera;
 
   @override
-  _LensPageState createState() => new _LensPageState();
+  LensPageState createState() => LensPageState();
 }
 
-class _LensPageState extends State<LensPage> {
-  String _model = ssd;
+class LensPageState extends State<LensPage> {
+  CameraController _controller;
+  Future<void> _initializeControllerFuture;
 
   @override
   void initState() {
     super.initState();
-    ModelController.loadModel();
+    _controller = CameraController(
+      widget.camera,
+      ResolutionPreset.medium,
+    );
+    _initializeControllerFuture = _controller.initialize();
   }
 
-  setRecognitions(recognitions, imageHeight, imageWidth) {
-    print(recognitions);
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Camera(
-            widget.cameras,
-            _model,
-            setRecognitions,
-          )
-        ],
+      appBar: AppBar(title: const Text('Take a picture')),
+      body: FutureBuilder<void>(
+        future: _initializeControllerFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return CameraPreview(_controller);
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          try {
+            await _initializeControllerFuture;
+            final image = await _controller.takePicture("image/");
+            var rightAnswer;
+          } catch (e) {
+            print(e);
+          }
+        },
+        child: const Icon(Icons.camera_alt),
       ),
     );
   }

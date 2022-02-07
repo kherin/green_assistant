@@ -6,6 +6,7 @@ import 'package:camera/camera.dart';
 import 'package:green_assistant/pages/lens.dart';
 
 List<CameraDescription> cameras;
+final firstCamera = cameras.first;
 
 Future<Null> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +26,7 @@ class GreenAssistantApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
       ),
-      home: LensPage(cameras),
+      home: LensPage(),
     );
   }
 }
