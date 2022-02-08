@@ -7,4 +7,8 @@ class StringUtils {
     var values = List<int>.generate(len, (i) => random.nextInt(255));
     return base64UrlEncode(values);
   }
+
+  static String getBasicAuth(String username, String password) {
+    return 'Basic ' + base64Encode(utf8.encode('$username:$password'));
+  }
 }

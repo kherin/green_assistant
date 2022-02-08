@@ -1,16 +1,16 @@
-import 'dart:io';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:green_assistant/utils/string.dart';
 
 // local imports
-import 'package:green_assistant/constants/values.dart' as CONSTANT_VALUES;
+import 'package:green_assistant/constants/values.dart' as CONSTANTS;
 
 class API {
   static postFile(String uri, String filePath) async {
     //create multipart request for POST or PATCH method
     var request = http.MultipartRequest("POST", Uri.parse(uri));
-    request.headers['authorization'] =
-        getBasicAuth(CONSTANT_VALUES.USERNAME, "");
+
+    String basicAuthString = StringUtils.getBasicAuth(CONSTANTS.USERNAME, "");
+    request.headers['authorization'] = basicAuthString;
 
     //create multipart using filepath, string or bytes
     var pic = await http.MultipartFile.fromPath("image", filePath);
@@ -23,9 +23,5 @@ class API {
     var responseData = await response.stream.toBytes();
     var responseString = String.fromCharCodes(responseData);
     print("API Response: " + responseString);
-  }
-
-  static String getBasicAuth(String username, String password) {
-    return 'Basic ' + base64Encode(utf8.encode('$username:$password'));
   }
 }
