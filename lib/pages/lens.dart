@@ -52,8 +52,6 @@ class LensPageState extends State<LensPage> {
         onPressed: () async {
           try {
             await _initializeControllerFuture;
-            // final image = await _controller.takePicture("image/");
-            // var rightAnswer;
           } catch (e) {
             print(e);
           }
