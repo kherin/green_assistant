@@ -3,10 +3,9 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 class LensPage extends StatefulWidget {
-  const LensPage({
-    Key key,
+  const LensPage(
     this.camera,
-  }) : super(key: key);
+  ) : super();
 
   final CameraDescription camera;
 
@@ -15,17 +14,18 @@ class LensPage extends StatefulWidget {
 }
 
 class LensPageState extends State<LensPage> {
-  CameraController _controller;
-  Future<void> _initializeControllerFuture;
+  late CameraController _controller;
+  late Future<void> _initializeControllerFuture;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
     _controller = CameraController(
       widget.camera,
       ResolutionPreset.medium,
     );
-    _initializeControllerFuture = _controller.initialize();
+
+    _controller.initialize();
   }
 
   @override
@@ -37,21 +37,27 @@ class LensPageState extends State<LensPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Take a picture')),
+      appBar: AppBar(
+        title: const Text('Take a picture'),
+      ),
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return CameraPreview(_controller);
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           try {
-            await _initializeControllerFuture;
+            await _controller.initialize();
+            final image = _controller.takePicture("../output/img/file1.png");
+            print(image);
           } catch (e) {
             print(e);
           }

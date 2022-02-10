@@ -5,7 +5,7 @@ import 'package:camera/camera.dart';
 // local imports
 import 'package:green_assistant/pages/lens.dart';
 
-List<CameraDescription> cameras;
+late List<CameraDescription> cameras;
 final firstCamera = cameras.first;
 
 Future<Null> main() async {
@@ -26,7 +26,7 @@ class GreenAssistantApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
       ),
-      home: LensPage(),
+      home: LensPage(firstCamera),
     );
   }
 }
