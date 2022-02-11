@@ -20,7 +20,7 @@ class Camera extends StatefulWidget {
 }
 
 class _CameraState extends State<Camera> {
-  late CameraController controller;
+  CameraController controller;
   bool isDetecting = false;
   final shift = (0xFF << 24);
 

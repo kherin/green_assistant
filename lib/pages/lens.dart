@@ -14,8 +14,8 @@ class LensPage extends StatefulWidget {
 }
 
 class LensPageState extends State<LensPage> {
-  late CameraController _controller;
-  late Future<void> _initializeControllerFuture;
+  CameraController _controller;
+  Future<void> _initializeControllerFuture;
 
   @override
   initState() {

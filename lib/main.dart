@@ -5,7 +5,7 @@ import 'package:camera/camera.dart';
 // local imports
 import 'package:green_assistant/pages/lens.dart';
 
-late List<CameraDescription> cameras;
+List<CameraDescription> cameras;
 final firstCamera = cameras.first;
 
 Future<Null> main() async {
